@@ -37,11 +37,11 @@ dependencies = [
 
 
 [project.urls]
-Homepage = "https://gitlab.com/cunningdesigns/evemap"
-Documentation = "https://gitlab.com/cunningdesigns/evemap/-/tree/main/docs?ref_type=heads"
-Source = "https://gitlab.com/cunningdesigns/evemap"
-Changelog = "https://gitlab.com/cunningdesigns/evemap/-/blob/main/CHANGELOG.md"
-Tracker = "https://gitlab.com/cunningdesigns/evemap/-/issues"
+Homepage = "https://github.com/Thrainkrilleve/evemap"
+Documentation = "https://github.com/Thrainkrilleve/evemap/tree/main/docs"
+Source = "https://github.com/Thrainkrilleve/evemap"
+Changelog = "https://github.com/Thrainkrilleve/evemap/blob/main/CHANGELOG.md"
+Tracker = "https://github.com/Thrainkrilleve/evemap/issues"
 
 [tool.flit.module]
 name = "evemap"
