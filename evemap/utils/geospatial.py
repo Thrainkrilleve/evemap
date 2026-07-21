@@ -22,6 +22,15 @@ from evemap import app_settings as settings
 class Geospatial:
 
     @staticmethod
+    def _build_region_geometry(points):
+        if not points:
+            return None, None
+
+        hull = MultiPoint(points).convex_hull
+        centroid = hull.centroid
+        return mapping(hull), list(centroid.coords)[0]
+
+    @staticmethod
     def layer(name: str):
         match name:
             case "regions":
@@ -144,22 +153,26 @@ class Geospatial:
         systems = {}
         connections = []
 
+        for system in EveSolarSystem.objects.select_related(
+            "eve_constellation__eve_region"
+        ).all():
+            systems[system.id] = {
+                "id": system.id,
+                "name": f"{system.name}",
+                "security_status": f"{system.security_status}",
+                "constellation": f"{system.eve_constellation.name}",
+                "region_name": f"{system.eve_constellation.eve_region.name}",
+                "coords": [
+                    system.position_x,
+                    system.position_z,
+                ],
+            }
+
         stargates_qs = EveStargate.objects.all()
         for gate in stargates_qs:
             stargates[gate.id] = {
                 "name": f"{gate.eve_solar_system.name} > {gate.destination_eve_solar_system.name}",
                 "system_id": gate.eve_solar_system.id,
-                "region_name": f"{gate.eve_solar_system.eve_constellation.eve_region.name}",
-                "coords": [
-                    gate.eve_solar_system.position_x,
-                    gate.eve_solar_system.position_z,
-                ],
-            }
-            systems[gate.eve_solar_system.id] = {
-                "id": gate.eve_solar_system.id,
-                "name": f"{gate.eve_solar_system.name}",
-                "security_status": f"{gate.eve_solar_system.security_status}",
-                "constellation": f"{gate.eve_solar_system.eve_constellation.name}",
                 "region_name": f"{gate.eve_solar_system.eve_constellation.eve_region.name}",
                 "coords": [
                     gate.eve_solar_system.position_x,
@@ -193,19 +206,17 @@ class Geospatial:
         # Loop over each region and create a feature
         for region_name, region_systems in regions.items():
             points = [system["coords"] for system in region_systems]
-            if len(points) < 3:
-                # Convex hull will fail otherwise
+            geometry, centroid = Geospatial._build_region_geometry(points)
+            if geometry is None or centroid is None:
                 continue
-            multipoint = MultiPoint(points)
-            hull = multipoint.convex_hull
-            centroid = hull.centroid
             features.append(
                 {
                     "type": "Feature",
-                    "geometry": mapping(hull),
+                    "geometry": geometry,
                     "properties": {
+                        "name": region_name,
                         "region_name": region_name,
-                        "centroid": list(centroid.coords)[0],
+                        "centroid": centroid,
                     },
                 }
             )
@@ -310,25 +321,23 @@ class Geospatial:
             )
             max_security = max(security_statuses) if security_statuses else 0
 
-            if len(points) < 3:
+            geometry, centroid = Geospatial._build_region_geometry(points)
+            if geometry is None or centroid is None:
                 continue
-            multipoint = MultiPoint(points)
-            hull = multipoint.convex_hull
-            centroid = hull.centroid
             region_name = EveRegion.objects.get(id=region_id).name
             region_centroids[region_id] = {
                 "region_id": region_id,
                 "region_name": region_name,
                 "avg_security": avg_security,
                 "max_security": max_security,
-                "centroid": list(centroid.coords)[0],
+                "centroid": centroid,
             }
             # add a point for region
             feature = {
                 "type": "Feature",
                 "geometry": {
                     "type": "Point",
-                    "coordinates": list(centroid.coords)[0],
+                    "coordinates": centroid,
                 },
                 "properties": {
                     "id": region_id,

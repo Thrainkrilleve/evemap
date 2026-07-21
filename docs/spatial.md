@@ -1,5 +1,9 @@
 Spatial data is cached in geojson files.
 
+Refresh both cache locations with:
+
+- `python manage.py generate_geospatial`
+
 Faciliates administrators to install the app without the dependency of pre-populating the database with the entire eve-universe + stargates.  
 
 - `/static/evemap/geospatial/`  

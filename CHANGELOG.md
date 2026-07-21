@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.0.4] - 2026-07-21
+
+### Fixed
+
+- Included low-system regions such as Zarzakh/Yasna Zakh in generated region caches instead of dropping any region with fewer than three systems.
+- Updated the geospatial regeneration command to also rebuild `evemap/data/regions.geojson` so the single-region view stays in sync with the shipped static caches.
+
 ## [0.0.3] - 2026-07-21
 
 ### Fixed
