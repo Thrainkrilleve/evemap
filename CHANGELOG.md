@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.0.1] - 2026-07-21
+
+### Changed
+
+- Relaxed `django-eveuniverse` dependency to `>=2,<3` to avoid downgrading AllianceAuth app dependencies during installation.
+- Relaxed `django-ninja` dependency to `>=1.5,<2` to stay compatible with current AllianceAuth app requirements.
+
 ## [0.0.0b5] - 2025-06-27
 
 ### Changed

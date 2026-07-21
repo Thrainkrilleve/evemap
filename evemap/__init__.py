@@ -4,4 +4,4 @@
 default_app_config = "evemap.apps.EveMapConfig"
 
 __title__ = "Eve Map"
-__version__ = "0.0.0b5"
+__version__ = "0.0.1"
