@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.0.3] - 2026-07-21
+
+### Fixed
+
+- Removed the obsolete `{% load bootstrap %}` template tag import that caused `/evemap/` to fail under current AllianceAuth template libraries.
+
 ## [0.0.2] - 2026-07-21
 
 ### Fixed
