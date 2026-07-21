@@ -13,7 +13,6 @@ api = NinjaAPI(
     title="Evemap API",
     urls_namespace="evemap:api",
     auth=django_auth,
-    csrf=True,
     openapi_url=settings.DEBUG and "/openapi.json" or "",
 )
 
